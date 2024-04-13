@@ -1,0 +1,21 @@
+name: csci5561
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - opencv=4.9.0
+  - numpy=1.26.4
+  - pandas=2.2.1
+  - matplotlib=3.8.3
+  - jupyter
+  - pip
+  - cudatoolkit=11.2
+  - cudnn=8.1.0
+  - pip:
+      - tensorflow==2.10.1
+      - scipy
+      - torch==1.12.0
+# For the conda file installation,
+# -> Anaconda Prompt, put this file on the same directory
+# -> conda env create -f environments.yml
+# -> conda activate csci5561
