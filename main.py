@@ -2,25 +2,10 @@ import numpy as np
 import os
 import cv2
 import tensorflow as tf
+from tensorflow import keras
 
 
 downsample_rates = [8, 16, 32]
+expansion_ratio = [4,6,8,10,12]
 
-def stem_module(input_tensor):
-    pass
-
-def cell_module():
-    pass
-
-def head_module():
-    pass
-
-def FasterSeg():
-    pass
-
-def zoomed_conv():
-    pass
-
-def searchable_superkernel():
-    pass
 
