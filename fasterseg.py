@@ -93,7 +93,23 @@ class FasterSegModelFactory():
     
 
     def head_module(inputs):
-        pass
+
+        input_1 = inputs[0]   # lower res feature map
+        input_2 = inputs[1]   # higher res feature map      
+
+        head = Conv2D(filters = input_1.shape[-1], kernel_size=1)(input_2)
+        head = BatchNormalization()(head)
+        head = ReLU()(head)
+
+        head = UpSampling2D()(head)
+
+        head = Concatenate()([input_1, head])
+
+        head = Conv2D(filters=input_1.shape[-1], kernel_size=3, padding='same')(head)
+        head = BatchNormalization()(head)
+        head = ReLU()(head)
+
+        return head
 
 
 
