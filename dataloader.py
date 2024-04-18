@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from PIL import Image
+import keras
 from keras.utils import Sequence
 
 class CityscapesDataLoader(Sequence):
@@ -33,9 +34,12 @@ class CityscapesDataLoader(Sequence):
         for image_path, label_path in zip(batch_image_paths, batch_label_paths):
             image = Image.open(image_path).resize(self.image_size)
             label = Image.open(label_path).resize(self.image_size)
-            
-            # Preprocess the images and labels as per your requirements
-            # For example, you can convert them to numpy arrays and normalize the pixel values
+
+            image = np.array(image)
+            image = image/255.0
+
+            label = np.array(label)
+            label = keras.utils.to_categorical(label, num_classes=19)
             
             batch_images.append(image)
             batch_labels.append(label)
