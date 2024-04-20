@@ -70,8 +70,9 @@ model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001),
 
 checkpoint_callback = keras.callbacks.ModelCheckpoint(filepath=checkpoint_filepath, save_best_only=True, monitor='val_loss')
 
+callback_earlystop = keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=0.001, patience=2, restore_best_weights=True)
 
-history = model.fit(train_data_loader, validation_data=val_data_loader, epochs=EPOCHS, callbacks=[checkpoint_callback])
+history = model.fit(train_data_loader, validation_data=val_data_loader, epochs=EPOCHS, callbacks=[checkpoint_callback, callback_earlystop])
 
 
 
