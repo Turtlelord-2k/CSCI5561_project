@@ -21,10 +21,10 @@ EPOCHS = 30
 BATCH_SIZE = 12
 VERBOSE = 1
 ts = time.strftime('%d_%m_%H_%M_%S')
-checkpoint_filepath = f"path/model_{ts}.h5"
+checkpoint_filepath = f"model_{ts}.h5"
 
-train_data_loader = CityscapesDataLoader(data_dir='path/to/cityscapes/train', batch_size=BATCH_SIZE, image_size=(512, 1024))
-val_data_loader = CityscapesDataLoader(data_dir='path/to/cityscapes/val', batch_size=BATCH_SIZE, image_size=(512, 1024))
+train_data_loader = CityscapesDataLoader(data_dir='./Cityscapes/leftImg8bit/train', batch_size=BATCH_SIZE, image_size=(512, 1024))
+val_data_loader = CityscapesDataLoader(data_dir='./Cityscapes/leftImg8bit/val', batch_size=BATCH_SIZE, image_size=(512, 1024))
 
 def FasterSeg(input_shape, num_classes):
 
@@ -52,18 +52,21 @@ def FasterSeg(input_shape, num_classes):
 
     output = Concatenate()([output_16, output_32])
     output = Conv2D(num_classes, kernel_size=3, padding='same')(output)
-    output = UpSampling2D()(output)
+    output = UpSampling2D(size=(4,2))(output)
+    output = tf.keras.layers.Softmax()(output)
 
     model = Model(inputs, output)
     return model
 
-model = FasterSeg(input_shape=(512, 1024, 3), num_classes = 19)
+# tf.config.run_functions_eagerly(True)
+
+model = FasterSeg(input_shape=(512, 1024, 3), num_classes = 20)
 
 model.summary()
 
 model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001),
-            loss=keras.losses.CategoricalCrossentropy(from_logits=True),
-            metrics=[keras.metrics.CategoricalAccuracy(), keras.metrics.MeanIoU(num_classes=19)])
+            loss=keras.losses.CategoricalCrossentropy(),
+            metrics=[keras.metrics.CategoricalAccuracy()])
 
 checkpoint_callback = keras.callbacks.ModelCheckpoint(filepath=checkpoint_filepath, save_best_only=True, monitor='val_loss')
 
