@@ -73,7 +73,7 @@ class CityscapesDataLoader(Sequence):
             label = Image.open(label_path).resize((2048, 2048))
 
             image = np.array(image)
-            image = image/255.0
+            # image = image/255.0
             image = np.transpose(image, (1, 0, 2))
 
             label = np.array(label)

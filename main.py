@@ -17,11 +17,12 @@ from elements import *
 from dataloader import *
 
 
-EPOCHS = 30
-BATCH_SIZE = 12
+
+EPOCHS = 5
+BATCH_SIZE = 4
 VERBOSE = 1
 ts = time.strftime('%d_%m_%H_%M_%S')
-checkpoint_filepath = f"model_{ts}.h5"
+checkpoint_filepath = f"./model_{ts}.h5"
 
 train_data_loader = CityscapesDataLoader(data_dir='./Cityscapes/leftImg8bit/train', batch_size=BATCH_SIZE, image_size=(512, 1024))
 val_data_loader = CityscapesDataLoader(data_dir='./Cityscapes/leftImg8bit/val', batch_size=BATCH_SIZE, image_size=(512, 1024))
@@ -73,7 +74,6 @@ checkpoint_callback = keras.callbacks.ModelCheckpoint(filepath=checkpoint_filepa
 callback_earlystop = keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=0.001, patience=2, restore_best_weights=True)
 
 history = model.fit(train_data_loader, validation_data=val_data_loader, epochs=EPOCHS, callbacks=[checkpoint_callback, callback_earlystop])
-
 
 
 epochs = history.epoch
